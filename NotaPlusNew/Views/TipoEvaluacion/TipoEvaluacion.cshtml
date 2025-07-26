@@ -1,0 +1,153 @@
+﻿@model List<NotaPlusNew.Models.TipoEvaluacion>
+@{
+    ViewBag.Title = "Tipo de Evaluación";
+
+    var niveles = ViewBag.Niveles as List<SelectListItem> ?? new List<SelectListItem>();
+    var grados = ViewBag.Grados as List<SelectListItem> ?? new List<SelectListItem>();
+    var secciones = ViewBag.Secciones as List<SelectListItem> ?? new List<SelectListItem>();
+    var cursos = ViewBag.Cursos as List<SelectListItem> ?? new List<SelectListItem>();
+
+    var nivelSel = Request["nivel"];
+    var gradoSel = Request["grado"];
+    var seccionSel = Request["seccion"];
+    var cursoSel = Request["curso"];
+}
+
+<h2 class="my-4 text-center text-primary">Gestión de Tipos de Evaluación</h2>
+
+<form method="get" class="row g-3 mb-4">
+    <div class="col-md-3">
+        <label class="form-label fw-bold">Nivel:</label>
+        @Html.DropDownList("nivel", new List<SelectListItem> {
+       new SelectListItem { Text = "Primaria", Value = "1" },
+       new SelectListItem { Text = "Secundaria", Value = "2" }
+   }, "Seleccione", new { @class = "form-select", required = "required" })
+    </div>
+    <div class="col-md-2">
+        <label class="form-label fw-bold">Grado:</label>
+        @Html.DropDownList("grado", new List<SelectListItem> {
+     new SelectListItem { Text = "1er", Value = "1" },
+     new SelectListItem { Text = "2do", Value = "2" },
+     new SelectListItem { Text = "3ro", Value = "3" },
+     new SelectListItem { Text = "4to", Value = "4" },
+     new SelectListItem { Text = "5to", Value = "5" },
+     new SelectListItem { Text = "6to", Value = "6" }
+ }, "Seleccione", new { @class = "form-select", required = "required" })
+
+
+    </div>
+    <div class="col-md-2">
+        <label class="form-label fw-bold">Sección:</label>
+        @Html.DropDownList("seccion", new List<SelectListItem> {
+      new SelectListItem { Text = "A", Value = "1" },
+      new SelectListItem { Text = "B", Value = "2" },
+      new SelectListItem { Text = "C", Value = "3" }
+  }, "Seleccione", new { @class = "form-select", required = "required" })
+    </div>
+    <div class="col-md-3">
+        <label class="form-label fw-bold">Asignatura:</label>
+        @Html.DropDownList("curso", new SelectList(cursos, "Value", "Text", cursoSel), "Seleccione", new { @class = "form-select", required = "required" })
+    </div>
+    <div class="col-md-2 align-self-end">
+        <button type="submit" class="btn btn-primary w-100">Buscar</button>
+    </div>
+</form>
+
+@if (Model != null && Model.Count > 0)
+{
+    <form method="post" action="/TipoEvaluacion/GuardarPesos" id="formEvaluacion">
+        <table class="table table-bordered table-hover shadow-sm bg-white">
+            <thead class="table-dark text-center">
+                <tr>
+                    <th>Evaluación</th>
+                    <th>Peso (%)</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.Count; i++)
+                {
+                    <tr>
+                        <td class="align-middle">@Model[i].NombreEvaluacion</td>
+                        <td>
+                            <input type="number" name="tipos[@i].Peso" value="@Model[i].Peso" class="form-control text-end" min="0" max="100" step="1" required />
+                            <input type="hidden" name="tipos[@i].IdTipoEvaluacion" value="@Model[i].IdTipoEvaluacion" />
+                            <input type="hidden" name="tipos[@i].NombreEvaluacion" value="@Model[i].NombreEvaluacion" />
+                        </td>
+                        <td class="text-center">
+                            <a href="/TipoEvaluacion/Editar/@Model[i].IdTipoEvaluacion" class="btn btn-outline-primary btn-sm me-1">
+                                <i class="bi bi-pencil-square"></i> Editar
+                            </a>
+                            <a href="/TipoEvaluacion/Eliminar/@Model[i].IdTipoEvaluacion?nivel=@nivelSel&grado=@gradoSel&seccion=@seccionSel&curso=@cursoSel" class="btn btn-outline-danger btn-sm" onclick="return confirm('¿Está seguro de eliminar esta evaluación?');">
+                                <i class="bi bi-trash"></i> Eliminar
+                            </a>
+                        </td>
+                    </tr>
+                }
+
+                <!-- Fila para agregar nueva evaluación -->
+                <tr class="table-success">
+                    <td>
+                        <input type="text" name="nuevo.NombreEvaluacion" class="form-control" placeholder="Nueva evaluación" required />
+                    </td>
+                    <td>
+                        <input type="number" name="nuevo.Peso" class="form-control text-end" placeholder="%" min="0" max="100" step="1" required />
+                    </td>
+                    <td class="text-center">
+                        <button type="submit" formaction="/TipoEvaluacion/Agregar?nivel=@nivelSel&grado=@gradoSel&seccion=@seccionSel&curso=@cursoSel" formmethod="post" class="btn btn-outline-success btn-sm">
+                            <i class="bi bi-plus-circle"></i> Añadir
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="d-flex justify-content-between">
+            <span></span>
+            <button type="submit" class="btn btn-success px-4">
+                <i class="bi bi-save"></i> Guardar Cambios
+            </button>
+        </div>
+    </form>
+}
+else if (TempData["mensaje"] != null)
+{
+    <div class="alert alert-success mt-3 text-center">
+        @TempData["mensaje"]
+    </div>
+}
+else
+{
+    <div class="alert alert-info mt-3 text-center">
+        Seleccione nivel, grado, sección y curso para ver las evaluaciones.
+    </div>
+}
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.getElementById("formEvaluacion");
+            if (form) {
+                form.addEventListener("submit", function (e) {
+                    const inputs = form.querySelectorAll("input[name$='.Peso']");
+                    let total = 0;
+
+                    inputs.forEach(input => {
+                        total += parseFloat(input.value || 0);
+                    });
+
+                    if (total !== 100) {
+                        e.preventDefault();
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Peso incorrecto',
+                            text: 'La suma total de los pesos debe ser 100%. Actualmente suma: ' + total + '%'
+                        });
+                    }
+                });
+            }
+        });
+    </script>
+}

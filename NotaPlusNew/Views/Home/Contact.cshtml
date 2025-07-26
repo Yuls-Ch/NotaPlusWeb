@@ -1,0 +1,18 @@
+﻿@{
+    ViewBag.Title = "Contacto Notas Plus";
+}
+<main aria-labelledby="title">
+    <h2 id="title">@ViewBag.Title.</h2>
+    <h3>@ViewBag.Message</h3>
+
+    <address>
+
+        @Html.ActionLink("Unete a nuestro equipo regístrandote aquí", "Registrar", "Usuario", null, new { @class = "btn btn-link" })
+
+    </address>
+
+    <address>
+        <strong>Support:</strong>   <a href="mailto:Support@example.com">Support@example.com</a><br />
+        <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
+    </address>
+</main>

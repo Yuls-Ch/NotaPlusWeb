@@ -1,0 +1,125 @@
+﻿@model List<NotaPlusNew.Models.Usuario>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Todos los Usuarios";
+}
+
+
+@section Styles{
+    <link href="~/Content/css/ListarUsuarios.css" rel="stylesheet" />
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+</head>
+<body>
+    <div class="container mt-5 listar-usuarios">
+        <h1 class="text-center header-title">@ViewData["Title"]</h1>
+        <br />
+
+        @if (TempData["Exito"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>¡Éxito!</strong> @TempData["Exito"]
+                <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        }
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Error:</strong> @TempData["Error"]
+                <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        }
+
+        <div class="row text-center mb-4">
+            @if (!Model.Any())
+            {
+                <div class="col-12">
+                    <div class="alert alert-info" role="alert">
+                        No hay usuarios registrados.
+                    </div>
+                </div>
+            }
+            else
+            {
+                foreach (var usuario in Model)
+                {
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card shadow border-primary">
+                            <div class="card-body">
+                                <h5 class="card-title">@usuario.Nombres @usuario.ApellidoPaterno @usuario.ApellidoMaterno</h5>
+                                <p class="card-text"><strong>Id:</strong> @usuario.IdUsuario</p>
+                                <p class="card-text"><strong>Correo:</strong> @usuario.CorreoElectronico</p>
+                                <p class="card-text"><strong>Documento:</strong> @usuario.NumeroDocumento</p>
+                                <hr />
+                                <div class="d-flex justify-content-around mt-3">
+                                    <a href="@Url.Action("DetalleUsuario", "Usuario", new { id = usuario.IdUsuario })"
+                                       class="btn-action text-primary-custom" title="Ver Detalles">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a href="javascript:void(0);"
+                                       class="btn-action text-danger-custom" title="Eliminar"
+                                       data-id="@usuario.IdUsuario"
+                                       data-nombre="@usuario.Nombres @usuario.ApellidoPaterno"
+                                       onclick="abrirModalEliminar(this)">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+
+    <!-- Modal de confirmación -->
+    <div class="modal fade" id="popupModal" tabindex="-1" role="dialog" aria-labelledby="popupModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <form method="post" action="/Usuario/Eliminar">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="popupModalLabel">Confirmar eliminación</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="textoConfirmacion">¿Estás segura de que deseas eliminar este usuario?</p>
+                        <input type="hidden" name="id" id="usuarioAEliminarId" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    @section Scripts {
+        <script>
+            function abrirModalEliminar(boton) {
+                const id = boton.getAttribute('data-id');
+                const nombre = boton.getAttribute('data-nombre');
+                document.getElementById('usuarioAEliminarId').value = id;
+                document.getElementById('textoConfirmacion').textContent =
+                    `¿Estás segura de que deseas eliminar a ${nombre}?`;
+                $('#popupModal').modal('show');
+            }
+        </script>
+    }
+
+</body>
+</html>

@@ -1,0 +1,182 @@
+﻿@model List<NotaPlusNew.Models.Alumno>
+
+@{
+    ViewBag.Title = "Lista de Alumnos";
+    string nivelSeleccionado = ViewBag.Nivel as string ?? "";
+    string gradoSeleccionado = ViewBag.Grado as string ?? "";
+    string seccionSeleccionada = ViewBag.Seccion as string ?? "";
+}
+
+<style>
+    body {
+        font-family: Arial;
+        margin: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .btn {
+        margin-right: 10px;
+    }
+
+    .table {
+        margin-top: 20px;
+        font-size: 14px;
+    }
+
+    select, input[type="submit"], .btn {
+        padding: 8px;
+        font-size: 14px;
+    }
+</style>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+
+<h2>Lista de Alumnos</h2>
+
+<p>
+    <a href="@Url.Action("Create", "Alumno")" class="btn btn-outline-success mb-3">
+        <i class="fas fa-user-plus"></i> Agregar Alumno
+    </a>
+</p>
+
+<form method="get" action="@Url.Action("Index", "Alumno")">
+    <div class="form-row">
+        <div class="form-group col-md-3">
+            <label for="Nivel">Nivel</label>
+            <select class="form-control" id="Nivel" name="nivel" onchange="actualizarGradosYSecciones()">
+                <option value="">-- Todos --</option>
+                <option value="Primaria" @(nivelSeleccionado == "Primaria" ? "selected" : "")>Primaria</option>
+                <option value="Secundaria" @(nivelSeleccionado == "Secundaria" ? "selected" : "")>Secundaria</option>
+            </select>
+        </div>
+        <div class="form-group col-md-3">
+            <label for="Grado">Grado</label>
+            <select class="form-control" id="Grado" name="grado">
+                <option value="">-- Todos --</option>
+            </select>
+        </div>
+        <div class="form-group col-md-3">
+            <label for="Seccion">Sección</label>
+            <select class="form-control" id="Seccion" name="seccion">
+                <option value="">-- Todos --</option>
+                <option value="A" @(seccionSeleccionada == "A" ? "selected" : "")>A</option>
+                <option value="B" @(seccionSeleccionada == "B" ? "selected" : "")>B</option>
+                <option value="C" @(seccionSeleccionada == "C" ? "selected" : "")>C</option>
+            </select>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-outline-primary">
+        <i class="fas fa-search"></i> Buscar
+    </button>
+    <a href="@Url.Action("Index", "Alumno")" class="btn btn-outline-secondary">
+        <i class="fas fa-broom"></i> Limpiar
+    </a>
+</form>
+
+@if (Model != null && Model.Count > 0)
+{
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Apellido Paterno</th>
+                <th>Apellido Materno</th>
+                <th>Nombres</th>
+                <th>DNI</th>
+                <th>Nivel</th>
+                <th>Grado</th>
+                <th>Sección</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var alumno in Model)
+            {
+                <tr>
+                    <td>@alumno.ApellidoPaterno</td>
+                    <td>@alumno.ApellidoMaterno</td>
+                    <td>@alumno.Nombres</td>
+                    <td>@alumno.NumeroIdentificacion</td>
+                    <td>@alumno.Nivel</td>
+                    <td>@alumno.Grado</td>
+                    <td>@alumno.Seccion</td>
+                    <td>
+                        <a href="@Url.Action("Edit", "Alumno", new { id = alumno.Id })" class="btn btn-sm btn-outline-warning">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a href="@Url.Action("Delete", "Alumno", new { id = alumno.Id })" class="btn btn-sm btn-outline-danger">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-info mt-4">
+        No se encontraron alumnos.
+    </div>
+}
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @if (TempData["mensaje"] != null)
+    {
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Éxito',
+                text: '@TempData["mensaje"]',
+                confirmButtonColor: '#3085d6'
+            });
+        </script>
+    }
+
+    @if (TempData["error"] != null)
+    {
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: '@TempData["error"]',
+                confirmButtonColor: '#d33'
+            });
+        </script>
+    }
+}
+
+
+<script>
+    const gradosPorNivel = {
+        "Primaria": ["1er", "2do", "3er", "4to", "5to", "6to"],
+        "Secundaria": ["1ro", "2do", "3do", "4to", "5to"]
+    };
+
+    function actualizarGradosYSecciones() {
+        const nivel = document.getElementById("Nivel").value;
+        const gradoSelect = document.getElementById("Grado");
+        const gradoActual = "@gradoSeleccionado";
+
+        gradoSelect.innerHTML = '<option value="">-- Todos --</option>';
+
+        if (gradosPorNivel[nivel]) {
+            gradosPorNivel[nivel].forEach(g => {
+                const option = document.createElement("option");
+                option.value = g;
+                option.text = g;
+                if (g === gradoActual) {
+                    option.selected = true;
+                }
+                gradoSelect.appendChild(option);
+            });
+        }
+    }
+
+    window.onload = actualizarGradosYSecciones;
+</script>

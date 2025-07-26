@@ -1,0 +1,131 @@
+﻿@model NotaPlusNew.Models.Usuario
+@{
+    ViewBag.Title = "Detalle del Usuario";
+}
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+
+
+<div class="container mt-4 mb-5">
+
+    <form>
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="text-center flex-grow-1 mb-0">DETALLE DEL USUARIO @Model.IdUsuario</h2>
+        </div>
+        <br />
+
+        <!-- AQUÍ es el lugar ideal -->
+        <div class="row mb-2">
+            <div class="col">
+                <a href="@Url.Action("ListarUsuarios", "Usuario")"
+                   class="btn btn-sm btn-secondary me-2" title="Volver">
+                    <i class="fas fa-arrow-left"></i> Volver
+                </a>
+            </div>
+        </div>
+
+        <hr />
+
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <label>No. Documento</label>
+                <input class="form-control" value="@Model.NumeroDocumento" disabled />
+            </div>
+            <div class="col-md-4 d-flex align-items-end">
+                <div class="form-check me-3">
+                    <input type="radio" class="form-check-input" @(Model.TipoDocumento == "DNI" ? "checked" : "") disabled />
+                    <label class="form-check-label">DNI</label>
+                </div>
+                <div class="form-check">
+                    <input type="radio" class="form-check-input" @(Model.TipoDocumento == "CE" ? "checked" : "") disabled />
+                    <label class="form-check-label">CE</label>
+                </div>
+            </div>
+        </div>
+
+        <h5>Datos personales</h5>
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <label>Apellido Paterno</label>
+                <input class="form-control" value="@Model.ApellidoPaterno" disabled />
+            </div>
+            <div class="col-md-4">
+                <label>Apellido Materno</label>
+                <input class="form-control" value="@Model.ApellidoMaterno" disabled />
+            </div>
+            <div class="col-md-4">
+                <label>Rol</label>
+                <input class="form-control" value="@Model.NombreRol" disabled />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <label>Nombre(s)</label>
+                <input class="form-control" value="@Model.Nombres" disabled />
+            </div>
+            <div class="col-md-4">
+                <label>Género</label>
+                <input class="form-control" value="@Model.Genero" disabled />
+            </div>
+            <div class="col-md-4">
+                <label>Estado Civil</label>
+                <input class="form-control" value="@Model.EstadoCivil" disabled />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <label>Fecha de nacimiento</label>
+                <input type="text" class="form-control" value="@Model.FechaNacimiento" disabled />
+            </div>
+            <div class="col-md-8">
+                <label>Dirección</label>
+                <input class="form-control" value="@Model.Direccion" disabled />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <label>Celular</label>
+                <input class="form-control" value="@Model.Celular" disabled />
+            </div>
+            <div class="col-md-8">
+                <label>Correo Electrónico</label>
+                <input class="form-control" value="@Model.CorreoElectronico" disabled />
+            </div>
+        </div>
+
+        <hr />
+        <h5>Datos del Usuario</h5>
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <label>Nombre de usuario</label>
+                <input class="form-control" value="@Model.NombreUsuario" disabled />
+            </div>
+            <div class="col-md-4">
+                <label>Contraseña</label>
+                <input type="password" value="*******" class="form-control" disabled />
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <label>Fecha de registro</label>
+                <input type="text" value="@Model.FechaRegistro" class="form-control" disabled />
+            </div>
+            <div class="col-md-4">
+                <label>Estado</label>
+                <input class="form-control" value="@(Model.Activo ? "Activo" : "Inactivo")" disabled />
+            </div>
+        </div>
+    </form>
+</div>
+
+
+@section Scripts {
+    <!-- jQuery y Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+}

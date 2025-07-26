@@ -1,0 +1,132 @@
+﻿@model NotaPlusNew.Models.Alumno
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Editar Alumno</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+</head>
+<body>
+    <div class="container mt-4">
+        <h2>Editar Alumno</h2>
+
+        @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+
+        @using (Html.BeginForm("Edit", "Alumno", FormMethod.Post, new { id = "form-actualizar" }))
+        {
+            @Html.HiddenFor(m => m.Id)
+
+            <div class="form-group">
+                <label>Apellido Paterno</label>
+                @Html.TextBoxFor(m => m.ApellidoPaterno, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.ApellidoPaterno, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                <label>Apellido Materno</label>
+                @Html.TextBoxFor(m => m.ApellidoMaterno, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.ApellidoMaterno, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                <label>Nombres</label>
+                @Html.TextBoxFor(m => m.Nombres, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Nombres, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                <label>DNI</label>
+                @Html.TextBoxFor(m => m.NumeroIdentificacion, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.NumeroIdentificacion, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                <label>Nivel</label>
+                @Html.TextBoxFor(m => m.Nivel, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Nivel, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                <label>Grado</label>
+                @Html.TextBoxFor(m => m.Grado, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Grado, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                <label>Sección</label>
+                @Html.TextBoxFor(m => m.Seccion, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Seccion, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                <label>Género</label>
+                @Html.TextBoxFor(m => m.Genero, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Genero, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                <label>Fecha Nacimiento</label>
+                @Html.TextBoxFor(m => m.FechaNacimiento, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                @Html.ValidationMessageFor(m => m.FechaNacimiento, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                <label>Dirección</label>
+                @Html.TextBoxFor(m => m.Direccion, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Direccion, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                <label>Tipo de Sangre</label>
+                @Html.TextBoxFor(m => m.TipoSangre, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.TipoSangre, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                <label>Apoderado</label>
+                @Html.TextBoxFor(m => m.Apoderado, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Apoderado, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                <label>Teléfono Apoderado</label>
+                @Html.TextBoxFor(m => m.TelefonoApoderado, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.TelefonoApoderado, "", new { @class = "text-danger" })
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i> Guardar Cambios
+            </button>
+
+            <a href="@Url.Action("Index", "Alumno")" class="btn btn-secondary">
+                <i class="fas fa-times"></i> Cancelar
+            </a>
+        }
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        document.getElementById("form-actualizar").addEventListener("submit", function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: '¿Estás segura de actualizar el alumno?',
+                text: "Esta acción modificará los datos.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, actualizar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    setTimeout(() => this.submit(), 100);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

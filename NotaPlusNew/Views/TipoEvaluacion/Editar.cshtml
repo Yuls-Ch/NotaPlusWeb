@@ -1,0 +1,32 @@
+﻿@model NotaPlusNew.Models.TipoEvaluacion
+@{
+    ViewBag.Title = "Editar Evaluación";
+}
+<h2 class="text-center mb-4">Editar Evaluación</h2>
+
+<form action="/TipoEvaluacion/Editar" method="post" class="card p-4 shadow w-50 mx-auto">
+    <input type="hidden" name="IdTipoEvaluacion" value="@Model.IdTipoEvaluacion" />
+    <input type="hidden" name="IdNivel" value="@Model.IdNivel" />
+    <input type="hidden" name="IdGrado" value="@Model.IdGrado" />
+    <input type="hidden" name="IdSeccion" value="@Model.IdSeccion" />
+    <input type="hidden" name="IdCurso" value="@Model.IdCurso" />
+
+    <div class="mb-3">
+        <label class="form-label">Nombre de Evaluación</label>
+        <input type="text" name="NombreEvaluacion" value="@Model.NombreEvaluacion" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Peso (%)</label>
+        <input type="number" name="Peso" value="@Model.Peso" class="form-control" min="0" max="100" step="1" required />
+    </div>
+
+    <div class="text-end">
+        <a href="@Url.Action("TipoEvaluacion", new { nivel = Model.IdNivel, grado = Model.IdGrado, seccion = Model.IdSeccion, curso = Model.IdCurso })" class="btn btn-secondary me-2">
+            Cancelar
+        </a>
+        <button type="submit" class="btn btn-success">
+            <i class="bi bi-save"></i> Guardar Cambios
+        </button>
+    </div>
+</form>

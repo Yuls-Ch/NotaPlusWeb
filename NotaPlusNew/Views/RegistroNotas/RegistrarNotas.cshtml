@@ -1,0 +1,145 @@
+﻿@model List<NotaPlusNew.Models.Nota>
+
+@{
+    ViewBag.Title = "Registro de Notas";
+    var alumnos = ViewBag.Alumnos as List<NotaPlusNew.Models.Alumno>;
+    var cursos = ViewBag.Cursos as List<SelectListItem>;
+    var bimestres = ViewBag.Bimestres as List<SelectListItem>;
+    var niveles = ViewBag.Niveles as List<SelectListItem>;
+    var grados = ViewBag.Grados as List<SelectListItem>;
+    var secciones = ViewBag.Secciones as List<SelectListItem>;
+    int idCurso = ViewBag.IdCurso != null ? (int)ViewBag.IdCurso : 0;
+    int idBimestre = ViewBag.IdBimestre != null ? (int)ViewBag.IdBimestre : 0;
+    int idAsignacion = ViewBag.IdAsignacion != null ? (int)ViewBag.IdAsignacion : 0;
+}
+
+
+<h2 class="text-center text-primary mt-4 mb-4">📋 Registro de Notas</h2>
+
+<!-- 🔍 Formulario de filtro -->
+<form method="post" action="/RegistroNotas/RegistrarNotasConDatos" class="row g-3 mb-5 border rounded p-4 shadow-sm bg-light">
+    <div class="col-md-2">
+        <label class="form-label fw-bold">Nivel</label>
+        @Html.DropDownList("nivel", niveles, "Seleccione", new { @class = "form-select", required = "required" })
+
+    </div>
+    <div class="col-md-2">
+        <label class="form-label fw-bold">Grado</label>
+        @Html.DropDownList("grado", grados, "Seleccione", new { @class = "form-select", required = "required" })
+    </div>
+
+    <div class="col-md-2">
+        <label class="form-label fw-bold">Sección</label>
+        @Html.DropDownList("seccion", secciones, "Seleccione", new { @class = "form-select", required = "required" })
+    </div>
+    <div class="col-md-3">
+        <label class="form-label fw-bold">Curso</label>
+        @Html.DropDownList("IdCurso", cursos, "Seleccione", new { @class = "form-select", required = "required" })
+    </div>
+    <div class="col-md-2">
+        <label class="form-label fw-bold">Bimestre</label>
+        @Html.DropDownList("IdBimestre", bimestres, "Seleccione", new { @class = "form-select", required = "required" })
+    </div>
+    <div class="col-md-1 align-self-end">
+        <button type="submit" class="btn btn-primary w-100">
+            <i class="bi bi-search"></i> Cargar
+        </button>
+    </div>
+</form>
+
+<!-- 📄 Tabla de ingreso de notas -->
+@if (alumnos != null && alumnos.Count > 0)
+{
+    <form method="post" action="/RegistroNotas/GuardarNotas" id="formNotas">
+        <input type="hidden" name="IdCurso" value="@idCurso" />
+        <input type="hidden" name="IdBimestre" value="@idBimestre" />
+        <input type="hidden" name="IdAsignacion" value="@idAsignacion" />
+
+        <div class="table-responsive shadow-sm">
+            <table class="table table-bordered table-hover align-middle">
+                <thead class="table-dark text-center">
+                    <tr>
+                        <th>Alumno</th>
+                        <th>Test Salida</th>
+                        <th>Trabajo Clase</th>
+                        <th>Tarea</th>
+                        <th>Examen Mensual</th>
+                        <th>Examen Bimestral</th>
+                        <th>Promedio Final</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < alumnos.Count; i++)
+                    {
+                        var alumno = alumnos[i];
+                        <tr>
+                            <td>
+                                @alumno.Nombres @alumno.ApellidoPaterno @alumno.ApellidoMaterno
+                                <input type="hidden" name="notas[@i].IdAlumno" value="@alumno.Id" />
+                            </td>
+                            <td><input type="number" step="0.1" name="notas[@i].TestSalida" class="form-control" required /></td>
+                            <td><input type="number" step="0.1" name="notas[@i].TrabajoClase" class="form-control" required /></td>
+                            <td><input type="number" step="0.1" name="notas[@i].Tarea" class="form-control" required /></td>
+                            <td><input type="number" step="0.1" name="notas[@i].ExamenMensual" class="form-control" required /></td>
+                            <td><input type="number" step="0.1" name="notas[@i].ExamenBimestral" class="form-control" required /></td>
+                            <td><input type="text" name="notas[@i].PromedioFinal" class="form-control promedio text-muted" readonly placeholder="0.00" /></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        @{
+            var grado = new List<SelectListItem> {
+        new SelectListItem { Text = "1er", Value = "1er" },
+        new SelectListItem { Text = "2do", Value = "2do" },
+        new SelectListItem { Text = "3ro", Value = "3ro" },
+        new SelectListItem { Text = "4to", Value = "4to" },
+        new SelectListItem { Text = "5to", Value = "5to" },
+        new SelectListItem { Text = "6to", Value = "6to" }
+    };
+        }
+
+
+        <div class="text-end mt-3">
+            <button type="submit" class="btn btn-success btn-lg px-4">
+                <i class="bi bi-save"></i> Guardar Notas
+            </button>
+        </div>
+    </form>
+}
+
+<!-- ✅ Scripts -->
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @if (TempData["mensaje"] != null)
+    {
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Éxito',
+                text: '@TempData["mensaje"]'
+            });
+        </script>
+    }
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const filas = document.querySelectorAll("tbody tr");
+
+            filas.forEach(fila => {
+                const inputs = fila.querySelectorAll("input[type='number']");
+                const promedioInput = fila.querySelector(".promedio");
+
+                inputs.forEach(input => {
+                    input.addEventListener("input", () => {
+                        const valores = Array.from(inputs).map(i => parseFloat(i.value) || 0);
+                        const promedio = valores.reduce((a, b) => a + b, 0) / valores.length;
+                        promedioInput.value = promedio.toFixed(2);
+                    });
+                });
+            });
+        });
+    </script>
+}

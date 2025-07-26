@@ -1,0 +1,108 @@
+﻿@model List<NotaPlusNew.Models.Docente>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Asegúrate de tenerlo o cámbialo por null si no usas Layout
+    ViewBag.Title = "Lista de Docentes";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+</head>
+<body>
+    <div>
+        <h2 class="mb-3">🧩 Mantenimiento de Docente</h2>
+        <p>
+            @Html.ActionLink("➕ Agregar Docente", "Create", "Docente", null, new { @class = "btn btn-outline-success mb-2" })
+        </p>
+
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Correo</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var d in Model)
+                {
+                    <tr>
+                        <td>@d.Nombres</td>
+                        <td>@d.Correo</td>
+                        <td>
+                            <a href="@Url.Action("Edit", "Docente", new { id = d.Id })" class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            |
+                            <a href="#" class="btn btn-sm btn-outline-danger btn-eliminar" data-url="@Url.Action("Delete", "Docente", new { id = d.Id })">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    @section Scripts {
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+        $(document).ready(function () {
+            var mensaje = '@TempData["mensaje"]';
+            if (mensaje) {
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Éxito!',
+                    text: mensaje,
+                    confirmButtonColor: '#28a745'
+                });
+            }
+        });
+        </script>
+    }
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var mensaje = '@TempData["mensaje"]';
+        if (mensaje) {
+            Swal.fire({
+                icon: 'success',
+                title: '¡Éxito!',
+                text: mensaje,
+                confirmButtonColor: '#28a745'
+            });
+        }
+    });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const botonesEliminar = document.querySelectorAll(".btn-eliminar");
+            botonesEliminar.forEach(btn => {
+                btn.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    const url = this.getAttribute("data-url");
+
+                    Swal.fire({
+                        title: '¿Estás segura de eliminar este docente?',
+                        text: "Esta acción no se puede deshacer.",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Sí, eliminar',
+                        cancelButtonText: 'Cancelar'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = url;
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

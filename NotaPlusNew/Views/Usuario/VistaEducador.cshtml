@@ -1,0 +1,203 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nota Plus - Sistema de Gestión Escolar</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="~/Content/css/VistaEducador.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.all.min.js"></script>
+
+    @{
+        Layout = null;
+    }
+
+</head>
+<body>
+
+    <header class="fade-in">
+        <nav aria-label="Navegación principal">
+            <div class="logo">Nota Plus</div>
+            <div class="nav-links">
+                <a href="#inicio">Inicio</a>
+                <a href="#caracteristicas">Características</a>
+                <a href="#faq">Preguntas</a>
+                <a href="@Url.Action("CerrarSesion", "Usuario")" class="btn">Cerrar Secion</a>
+            </div>
+        </nav>
+        <div class="header-content">
+            <h1>Sistema de gestión escolar simplificado</h1>
+            <p>Nota Plus es el sistema web académico diseñado para instituciones educativas que buscan automatizar la gestión de libretas de notas y procesos escolares de manera fácil y segura.</p>
+        </div>
+    </header>
+
+    <main>
+        <section id="inicio" class="fade-in">
+            <div class="grid-2">
+                <div class="content-box">
+                    <h2 style="color: var(--primary-color);">Potencie su centro educativo</h2>
+                    <p>Agilice la Libreta de Notas, ahorre tiempo y proteja todos los registros. Simplifique la gestión académica de todos los niveles, desde preescolar hasta bachillerato, con herramientas transparentes y centralizadas.</p>
+                    <a href="#" class="btn">Prueba ahora</a>
+                </div>
+                <div>
+                    <img src="~/Content/img/Niños aula.jpg" alt="Centro educativo moderno" loading="lazy">
+                </div>
+            </div>
+        </section>
+
+        <section id="caracteristicas" class="section-2 fade-in">
+            <div class="container">
+                <h2>Gestión escolar más inteligente y simplificada</h2>
+                <p>Automatice los libros de calificaciones, centralice los registros y ahorre tiempo con una plataforma segura todo en uno para cada nivel académico. Descubra cómo las herramientas digitales pueden agilizar las tareas diarias de su centro.</p>
+
+                <div class="carousel-container">
+                    <div class="carousel-track" id="carrusel-track">
+                        <div class="carousel-item">
+                            <div class="card">
+                                <img src="https://i.ibb.co/v3tN3B0/Captura-de-pantalla-2025-07-20-135915-1.jpg" alt="Clasificación sin esfuerzo, resultados instantáneos" loading="lazy">
+                                <h4>Calificación sin esfuerzo, resultados instantáneos</h4>
+                                <p>Despídase de los errores manuales. Mantenga registros precisos y actualizaciones para cada clase.</p>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="card">
+                                <img src="https://i.ibb.co/LgL3k8J/Captura-de-pantalla-2025-07-20-135915-2.jpg" alt="Funciones personalizadas, acceso seguro" loading="lazy">
+                                <h4>Funciones personalizadas, acceso seguro</h4>
+                                <p>Protege los datos confidenciales y asegura el acceso adecuado en todo momento.</p>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="card">
+                                <img src="https://i.ibb.co/f4F4Ngy/Captura-de-pantalla-2025-07-20-135915-3.jpg" alt="Reporte detallado y flexible" loading="lazy">
+                                <h4>Reporte detallado y flexible</h4>
+                                <p>Obtenga informes claros y personalizables adaptados a cada nivel educativo.</p>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="card">
+                                <img src="https://i.ibb.co/P48g827/Captura-de-pantalla-2025-07-20-135915-4.jpg" alt="Ahorre tiempo y recursos" loading="lazy">
+                                <h4>Ahorre tiempo y recursos</h4>
+                                <p>Reduzca el tiempo administrativo con un sistema fácil de usar y seguro.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="faq" class="section-faq fade-in">
+            <h2 style="color: var(--primary-color);">Sus preguntas son respondidas con sencillez</h2>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <h3>¿Cómo ahorra tiempo la calificación automática?</h3>
+                    <p>La calificación automática calcula las medias y consolida las puntuaciones al instante. Solo tiene que introducir los resultados de los alumnos: nuestro sistema se encarga del resto.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>¿Este sistema es adecuado para mi centro?</h3>
+                    <p>Sí, la plataforma se adapta a las necesidades de primaria y secundaria. Los ajustes son flexibles.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>¿Cómo se protegen los datos?</h3>
+                    <p>Los datos están encriptados y protegidos con controles estrictos de acceso. Se evitan pérdidas y se garantiza la trazabilidad.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>¿Ofrecen soporte técnico?</h3>
+                    <p>Sí, la plataforma cuenta con un sistema de soporte y ayuda en línea, asegurando que su equipo pueda resolver cualquier duda de manera rápida y eficiente.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-cta fade-in">
+            <h2>Automatice las calificaciones y Simplifique el éxito escolar</h2>
+            <a href="#" class="btn">Prueba ahora</a>
+        </section>
+    </main>
+
+    <footer class="fade-in">
+        <div>
+            <div class="logo">Nota Plus</div>
+            <p>Sistema de gestión escolar que simplifica la administración académica.</p>
+        </div>
+        <div>
+            <h4>Contacto</h4>
+            <p>Email: info@notaplus.com</p>
+            <p>Github: </p>
+        </div>
+        <div>
+            <h4>Enlaces rápidos</h4>
+            <ul>
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#caracteristicas">Características</a></li>
+                <li><a href="#">Pruebe ahora</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4>Soporte</h4>
+            <ul>
+                <li><a href="#faq">Preguntas frecuentes</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+                <li><a href="#">Términos y condiciones</a></li>
+            </ul>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Nota Plus. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Animación al hacer scroll
+            const fadeInObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('show');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.2
+            });
+
+            document.querySelectorAll('.fade-in').forEach(el => {
+                fadeInObserver.observe(el);
+            });
+
+            // Carrusel automático
+            const carouselTrack = document.getElementById('carrusel-track');
+            if (carouselTrack) {
+                let currentIndex = 0;
+                let itemsPerView = 2; // Default for larger screens
+                const totalItems = carouselTrack.querySelectorAll('.carousel-item').length;
+
+                const updateItemsPerView = () => {
+                    itemsPerView = window.innerWidth <= 768 ? 1 : 2;
+                };
+
+                const updateCarousel = () => {
+                    updateItemsPerView();
+                    const itemWidth = carouselTrack.firstElementChild.offsetWidth + 20; // item width + gap
+                    carouselTrack.style.transform = `translateX(${-currentIndex * itemWidth}px)`;
+                };
+
+                setInterval(() => {
+                    currentIndex = (currentIndex + 1) % (totalItems - itemsPerView + 1);
+                    if (currentIndex > totalItems - itemsPerView) {
+                        currentIndex = 0;
+                    }
+                    updateCarousel();
+                }, 3000);
+
+                window.addEventListener('resize', updateCarousel);
+                window.onload = updateCarousel;
+            }
+
+            // SweetAlert2 example
+            // Elimina esta línea si no la necesitas.
+            // toastr.success("¡Bienvenida!", "Mensaje de prueba");
+        });
+    </script>
+</body>
+</html>

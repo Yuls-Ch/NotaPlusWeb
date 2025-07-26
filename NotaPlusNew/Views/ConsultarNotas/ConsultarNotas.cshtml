@@ -1,0 +1,106 @@
+﻿@{
+    ViewBag.Title = "Consultar Libreta";
+    var alumno = ViewBag.Alumno as NotaPlusNew.Models.Alumno;
+    var libreta = ViewBag.Libreta as List<NotaPlusNew.Models.Nota>;
+}
+
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Consulta de Libreta de Notas</h4>
+        </div>
+        <div class="card-body">
+            @using (Html.BeginForm("ConsultarNotas", "ConsultarNotas", FormMethod.Post))
+            {
+                <div class="row g-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Nivel</label>
+                        @Html.DropDownList("Nivel", (List<SelectListItem>)ViewBag.Niveles, "Seleccione", new { @class = "form-select", required = "required" })
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label fw-bold">Grado</label>
+                        @Html.DropDownList("Grado", (List<SelectListItem>)ViewBag.Grados, "Seleccione", new { @class = "form-select", required = "required" })
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label fw-bold">Sección</label>
+                        @Html.DropDownList("Seccion", (List<SelectListItem>)ViewBag.Secciones, "Seleccione", new { @class = "form-select", required = "required" })
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Buscar Alumno</label>
+                        <input type="text" name="busqueda" class="form-control" placeholder="Nombre, Apellido o DNI" required />
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button type="submit" class="btn btn-success w-100">Buscar</button>
+                    </div>
+                </div>
+            }
+
+            @if (alumno != null)
+            {
+                <div class="alert alert-info mt-4 shadow-sm">
+                    <h5 class="mb-2">📘 Datos del Alumno</h5>
+                    <p class="mb-1"><strong>Nombre:</strong> @alumno.Nombres @alumno.ApellidoPaterno @alumno.ApellidoMaterno</p>
+                    <p class="mb-1"><strong>DNI:</strong> @alumno.NumeroIdentificacion</p>
+                    <p class="mb-1"><strong>Tutor:</strong> @alumno.Apoderado</p>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped align-middle shadow-sm">
+                        <thead class="table-dark text-center">
+                            <tr>
+                                <th>Curso</th>
+                                <th>I</th>
+                                <th>II</th>
+                                <th>III</th>
+                                <th>IV</th>
+                                <th>Promedio Final</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                var cursos = libreta.Select(n => n.NombreCurso).Distinct().ToList();
+
+                                foreach (var curso in cursos)
+                                {
+                                    var notasCurso = libreta.Where(n => n.NombreCurso == curso).ToList();
+                                    decimal suma = 0;
+                                    int cantidad = 0;
+                                    <tr class="text-center">
+                                        <td class="text-start fw-semibold">@curso</td>
+                                        @for (int i = 1; i <= 4; i++)
+                                        {
+                                            var notaBim = notasCurso.FirstOrDefault(n => n.IdBimestre == i);
+                                            if (notaBim != null)
+                                            {
+                                                <td>@notaBim.PromedioFinal.ToString("0.0")</td>
+                                                suma += notaBim.PromedioFinal;
+                                                cantidad++;
+                                            }
+                                            else
+                                            {
+                                                <td class="text-muted">-</td>
+                                            }
+                                        }
+                                        <td class="fw-bold bg-light">
+                                            @(cantidad > 0 ? (suma / cantidad).ToString("0.0") : "-")
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="text-end mt-3">
+                    <a href="@Url.Action("ConsultarNotas", "ConsultarNotas")" class="btn btn-outline-secondary">
+                        🔍 Nueva Búsqueda
+                    </a>
+                </div>
+            }
+            else if (ViewBag.Mensaje != null)
+            {
+                <div class="alert alert-warning mt-3 shadow-sm">@ViewBag.Mensaje</div>
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,199 @@
+﻿@model NotaPlusNew.Models.DocenteViewModel
+@{
+    var esNuevo = Model.Docente.Id == 0;
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+<h2 class="mb-3">🧩 Mantenimiento de Docente</h2>
+
+@using (Html.BeginForm(esNuevo ? "Create" : "Edit", "Docente", FormMethod.Post, new { id = "formulario" }))
+{
+    @Html.HiddenFor(m => m.Docente.Id)
+    @Html.Hidden("cursosJson", "", new { id = "cursosJson" })
+
+    <div class="row">
+        <div class="col-md-4">
+            <label>Ap. Paterno</label>
+            @Html.TextBoxFor(m => m.Docente.ApellidoPaterno, new { @class = "form-control" })
+        </div>
+        <div class="col-md-4">
+            <label>Ap. Materno</label>
+            @Html.TextBoxFor(m => m.Docente.ApellidoMaterno, new { @class = "form-control" })
+        </div>
+        <div class="col-md-4">
+            <label>Nombres</label>
+            @Html.TextBoxFor(m => m.Docente.Nombres, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="row mt-2">
+        <div class="col-md-3">
+            <label>Género</label>
+            @Html.TextBoxFor(m => m.Docente.Genero, new { @class = "form-control" })
+        </div>
+        <div class="col-md-3">
+            <label>Estado Civil</label>
+            @Html.TextBoxFor(m => m.Docente.EstadoCivil, new { @class = "form-control" })
+        </div>
+        <div class="col-md-3">
+            <label>Fec. Nac.</label>
+            @Html.TextBoxFor(m => m.Docente.FechaNacimiento, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control" })
+        </div>
+        <div class="col-md-3">
+            <label>Celular</label>
+            @Html.TextBoxFor(m => m.Docente.Celular, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="row mt-2">
+        <div class="col-md-6">
+            <label>Correo</label>
+            @Html.TextBoxFor(m => m.Docente.Correo, new { @class = "form-control" })
+        </div>
+        <div class="col-md-6">
+            <label>Dirección</label>
+            @Html.TextBoxFor(m => m.Docente.Direccion, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="row mt-2">
+        <div class="col-md-4">
+            <label>Grado Académico</label>
+            @Html.TextBoxFor(m => m.Docente.GradoAcademico, new { @class = "form-control" })
+        </div>
+        <div class="col-md-4">
+            <label>Área Enseñanza</label>
+            @Html.TextBoxFor(m => m.Docente.AreaEnsenanza, new { @class = "form-control" })
+        </div>
+        <div class="col-md-2">
+            <label>Tipo Docente</label>
+            @Html.TextBoxFor(m => m.Docente.TipoDocente, new { @class = "form-control" })
+        </div>
+        <div class="col-md-2">
+            <label>Contrato</label>
+            @Html.TextBoxFor(m => m.Docente.TipoContrato, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <hr />
+    <h4>Asignar Cursos</h4>
+    <div class="row mb-2">
+        <div class="col-md-3">
+            <select id="cursoId" class="form-control">
+                <option value="">-- Seleccione curso --</option>
+                @foreach (var curso in Model.CursosDisponibles)
+                {
+                    <option value="@curso.Id">@curso.Nombre</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-2">
+            <input type="text" id="nivel" placeholder="Nivel" class="form-control" />
+        </div>
+        <div class="col-md-1">
+            <input type="text" id="grado" placeholder="Grado" class="form-control" />
+        </div>
+        <div class="col-md-1">
+            <input type="text" id="grupo" placeholder="Grupo" class="form-control" />
+        </div>
+        <div class="col-md-3">
+            <input type="text" id="horario" placeholder="Horario" class="form-control" />
+        </div>
+        <div class="col-md-2">
+            <button type="button" id="btnAgregar" class="btn btn-primary w-100">
+                <i class="fas fa-plus"></i> Agregar
+            </button>
+        </div>
+    </div>
+
+    <table class="table table-bordered" id="tablaCursos">
+        <thead>
+            <tr>
+                <th>Curso</th>
+                <th>Nivel</th>
+                <th>Grado</th>
+                <th>Grupo</th>
+                <th>Horario</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.CursosAsignados)
+            {
+                <tr>
+                    <td data-id="@item.CursoId">@item.NombreCurso</td>
+                    <td>@item.Nivel</td>
+                    <td>@item.Grado</td>
+                    <td>@item.Grupo</td>
+                    <td>@item.Horario</td>
+                    <td>
+                        <button type="button" class="btn btn-danger btn-sm eliminar">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="mt-3">
+        <button type="submit" class="btn btn-success">
+            <i class="fas fa-save"></i> Guardar
+        </button>
+        <a href="@Url.Action("Index", "Docente")" class="btn btn-secondary ml-2">
+            <i class="fas fa-times"></i> Cancelar
+        </a>
+    </div>
+}
+
+@section scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(function () {
+            $('#btnAgregar').click(function () {
+                const cursoId = $('#cursoId').val();
+                const cursoText = $('#cursoId option:selected').text();
+                const nivel = $('#nivel').val();
+                const grado = $('#grado').val();
+                const grupo = $('#grupo').val();
+                const horario = $('#horario').val();
+
+                if (!cursoId) return;
+
+                $('#tablaCursos tbody').append(
+                    `<tr>
+                                            <td data-id="${cursoId}">${cursoText}</td>
+                                            <td>${nivel}</td>
+                                            <td>${grado}</td>
+                                            <td>${grupo}</td>
+                                            <td>${horario}</td>
+                                            <td><button type="button" class="btn btn-danger btn-sm eliminar"><i class="fas fa-trash-alt"></i></button></td>
+                                        </tr>`
+                );
+
+                // Limpiar campos
+                $('#nivel, #grado, #grupo, #horario').val('');
+            });
+
+            $(document).on('click', '.eliminar', function () {
+                $(this).closest('tr').remove();
+            });
+
+            $('#formulario').submit(function () {
+                const cursos = [];
+                $('#tablaCursos tbody tr').each(function () {
+                    cursos.push({
+                        CursoId: $(this).find('td:eq(0)').data('id'),
+                        NombreCurso: $(this).find('td:eq(0)').text(),
+                        Nivel: $(this).find('td:eq(1)').text(),
+                        Grado: $(this).find('td:eq(2)').text(),
+                        Grupo: $(this).find('td:eq(3)').text(),
+                        Horario: $(this).find('td:eq(4)').text()
+                    });
+                });
+
+                $('#cursosJson').val(JSON.stringify(cursos));
+            });
+        });
+    </script>
+}
