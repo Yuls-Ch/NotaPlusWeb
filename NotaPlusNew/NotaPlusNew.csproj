@@ -193,6 +193,9 @@
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="Content\css\ListarUsuarios.css" />
     <Content Include="Content\css\VistaEducador.css" />
+    <Content Include="Content\img\Carrusel-DatosSeguros.png" />
+    <Content Include="Content\img\Carrusel-VistaAdmin.png" />
+    <Content Include="Content\img\Carrusel-RegistroNotas.png" />
     <Content Include="Content\img\Manos en la mesa.jpg" />
     <Content Include="Content\img\Niños aula.jpg" />
     <Content Include="Content\img\niños mano.jpg" />

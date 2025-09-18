@@ -4,7 +4,7 @@
     --dark-color: #1a202c;
     --light-color: #f7fafc;
     --text-color: #4a5568;
-    --soft-orange-bg: #f8f0e7; /* Nuevo color de fondo */
+    --soft-orange-bg: #fdf6f2;
 }
 
 html {
@@ -22,7 +22,7 @@ body {
 
 /* --- Cabecera y Navegación --- */
 header {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/Content/img/niños mano.jpg');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/Content/img/niños mano.jpg');
     background-size: cover;
     background-position: center;
     height: 100vh;
@@ -36,51 +36,58 @@ header {
     padding: 0 5%;
 }
 
-nav {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;       
-    padding: 20px 5%;
-    background: rgba(0, 0, 0, 0.3);
-    z-index: 1000;
+.navbar {
     transition: background 0.3s ease;
+    padding: 20px 5%;
 }
 
-    nav .logo {
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: var(--primary-color);
+.navbar-brand.logo {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.navbar-nav .nav-link {
+    font-weight: 600;
+    margin-left: 20px;
+    padding: 8px 15px;
+    border-radius: 5px;
+    transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+    .navbar-nav .nav-link:hover {
+        color: var(--primary-color) !important;
+        background-color: transparent !important;
     }
 
-    nav a {
-        color: white;
-        margin-left: 25px;
-        text-decoration: none;
-        font-weight: 600;
-        transition: color 0.3s ease;
-    }
+.navbar-toggler {
+    background-color: red !important;
+    border: 1px solid white;
+    padding: 8px;
+    border-radius: 5px;
+}
 
-        nav a:hover {
-            color: var(--secondary-color);
-        }
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,255,255,0.9)' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
 
 .btn-nav {
     background-color: var(--primary-color);
-    color: white;
-    padding: 8px 18px;
+    color: white !important;
+    padding: 8px 18px !important;
     border-radius: 5px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.3s ease;
 }
 
-    .btn-nav:hover {
-        background-color: #d1461b;
-        color: white;
-    }
+.navbar-nav .nav-link:not(.btn-nav):hover {
+    color: var(--secondary-color) !important;
+    background-color: transparent !important;
+}
+
+.btn-nav:hover {
+    background-color: #d1461b;
+    color: white !important;
+}
 
 .header-content {
     padding-top: 100px;
@@ -91,6 +98,7 @@ nav {
         font-size: 3.5rem;
         font-weight: 700;
         margin-bottom: 0.5rem;
+        line-height: 1.2;
     }
 
     .header-content p {
@@ -133,13 +141,6 @@ h2 {
     text-align: center;
 }
 
-h3 {
-    font-size: 1.5rem;
-    margin-top: 40px;
-    color: var(--primary-color);
-    font-weight: 600;
-}
-
 .grid-2 {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -159,129 +160,128 @@ h3 {
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     }
 
-.section-2 {
-    background-color: var(--soft-orange-bg);
-    color: var(--dark-color);
-    text-align: center;
-    padding: 100px 5%; /* Más padding para la sección */
+/* Carrusel */
+.carousel-wrapper {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-    .section-2 h2, .section-2 p {
-        color: var(--dark-color); /* Color de texto ajustado para el nuevo fondo */
-        max-width: 900px;
-        margin-left: auto;
-        margin-right: auto;
-        padding: 0 20px;
+.carousel-button {
+    background-color: rgba(240, 90, 40, 0.85);
+    border: none;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+    padding: 10px 15px;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    transition: background-color 0.3s ease;
+}
+
+    .carousel-button:hover {
+        background-color: #d1461b;
     }
 
-/* Contenedor del carrusel */
+    .carousel-button.prev {
+        left: 10px;
+    }
+
+    .carousel-button.next {
+        right: 10px;
+    }
+
 .carousel-container {
-    position: relative;
     overflow: hidden;
     padding: 50px 5%;
+    width: 100%;
+    max-width: 1200px;
+    min-height: 350px;
+    margin: auto;
+    position: relative;
 }
 
-/* Pista del carrusel */
 .carousel-track {
     display: flex;
     transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    gap: 30px; /* Más espacio entre tarjetas */
+    gap: 30px;
+    width: max-content;
 }
 
-/* Elemento del carrusel */
 .carousel-item {
-    flex: 0 0 calc(33.333% - 20px); /* 3 items por vista en desktop */
+    min-height
+    flex: 0 0 calc(33.333% - 20px);
     max-width: calc(33.333% - 20px);
 }
 
-/* Estilos de las tarjetas */
-.card {
-    background: var(--primary-color); /* Fondo naranja */
-    color: white; /* Texto blanco para contraste */
+/* Tarjetas */
+.card--feature {
+    background: white;
     padding: 30px;
     border-radius: 15px;
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15); /* Sombra mejorada */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
     transition: transform 0.4s ease, box-shadow 0.4s ease;
     height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
+    border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-    .card:hover {
+    .card--feature:hover {
         transform: translateY(-8px);
         box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25);
     }
 
-    .card img {
+    .card--feature img {
         width: 100%;
-        max-width: 200px; /* Tamaño de imagen ajustado */
+        max-width: 150px;
+        height: auto;
         border-radius: 10px;
-        margin-bottom: 15px; /* Más espacio entre la imagen y el título */
+        margin-bottom: 20px;
     }
 
-    .card h4 {
-        color: white; /* Título en blanco */
+    .card--feature h4 {
         font-size: 1.3rem;
         margin: 0 0 10px 0;
+        color: var(--primary-color);
     }
 
-    .card p {
-        color: rgba(255, 255, 255, 0.85); /* Párrafo en blanco semitransparente */
+    .card--feature p {
         font-size: 0.95rem;
         margin: 0;
+        color: var(--text-color);
     }
 
-/* Media Queries para Responsive Design */
-@media(max-width: 1024px) {
-    .carousel-item {
-        flex: 0 0 calc(50% - 15px); /* 2 items en tabletas */
-        max-width: calc(50% - 15px);
-    }
-}
-
-@media(max-width: 768px) {
-    .section-2 {
-        padding: 60px 5%; /* Menos padding en móvil */
-    }
-
-        .section-2 h2 {
-            font-size: 2.2rem;
-        }
-
-    .carousel-item {
-        flex: 0 0 100%; /* 1 item en móvil */
-        max-width: 100%;
-    }
-
-    .carousel-track {
-        gap: 15px;
-    }
-}
-
+/* FAQ */
 .section-faq {
     background-color: var(--light-color);
     padding: 100px 5%;
-    max-width: 1200px; /* Aumentado max-width */
+    max-width: 1200px;
     margin: auto;
     text-align: center;
 }
 
 .faq-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Más flexible y ancho mínimo mayor */
-    gap: 40px; /* Más espacio entre ítems */
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 40px;
     text-align: left;
-    margin-top: 60px; /* Más margen */
+    margin-top: 60px;
 }
 
 .faq-item {
     background-color: white;
     padding: 30px;
     border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* Sombra más suave */
-    border-left: 5px solid var(--primary-color); /* Toque de color */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    border-left: 5px solid var(--primary-color);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -294,7 +294,7 @@ h3 {
         margin-top: 0;
         margin-bottom: 15px;
         font-size: 1.4rem;
-        color: var(--dark-color); /* Color de preguntas */
+        color: var(--dark-color);
     }
 
     .faq-item p {
@@ -302,8 +302,7 @@ h3 {
         color: var(--text-color);
     }
 
-
-/* --- Sección CTA --- */
+/* CTA */
 .section-cta {
     background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/Content/img/Personas debate.jpg');
     background-size: cover;
@@ -320,7 +319,7 @@ h3 {
         margin-bottom: 30px;
     }
 
-/* --- Pie de página (Footer) --- */
+/* Footer */
 footer {
     background: var(--dark-color);
     padding: 60px 5% 20px;
@@ -414,32 +413,9 @@ footer {
         font-size: 2rem;
     }
 
-    nav {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        padding-top: 15px;
-        background: rgba(0, 0, 0, 0.5);
-    }
-
-    .nav-links {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        margin-top: 15px;
-    }
-
-        .nav-links a {
-            margin: 0;
-        }
-
     .carousel-item {
         flex: 0 0 100%;
         max-width: 100%;
-    }
-
-    .faq-container {
-        grid-template-columns: 1fr;
     }
 
     footer {
